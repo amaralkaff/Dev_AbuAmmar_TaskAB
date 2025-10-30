@@ -64,18 +64,18 @@ Empty query returns 400 error. No matches returns empty array with message.
 
 Like scanning a book: titles are weighted higher than body text.
 
-Scoring system:
+**Scoring:**
+- Each word match in title: 10 points
+- Each word match in body: 3 points
+- Exact phrase in title: +20 bonus
+- Exact phrase in body: +5 bonus
 
-- Word in title: **10 points**
-- Word in body: **3 points**
-- Exact phrase in title: **+20 points**
-- Exact phrase in body: **+5 points**
+**Example:** Search "trust badges" → FAQ #1 gets 51 points
+- Title has both words (20 pts) + exact phrase bonus (20 pts)
+- Body has both words (6 pts) + exact phrase bonus (5 pts)
+- Other FAQs: 0 points
 
-**Example:** Searching "trust badges"
-- FAQ with "trust badges" in title = 40 points (2 words × 10 + exact phrase 20)
-- FAQ with just "badges" in body = 3 points
-
-Top 3 results are returned sorted by score.
+Returns top 3 results sorted by score.
 
 ## Features
 
