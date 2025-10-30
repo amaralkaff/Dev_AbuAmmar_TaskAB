@@ -19,14 +19,12 @@ Built with Next.js 16, React 19, and TypeScript.
 cd task-a-mini-full-stack-search
 npm install && npm run dev
 ```
-Open http://localhost:3000
 
 **Task B:**
 ```bash
 cd task-b-micro-scraper
 npm install && npm run dev
 ```
-Open http://localhost:3000
 
 ---
 
@@ -43,16 +41,6 @@ See [task-a-mini-full-stack-search/README.md](task-a-mini-full-stack-search/READ
 API endpoint that scrapes webpage title, meta description, and h1 tag. Has 20-second timeout and proper error handling.
 
 See [task-b-micro-scraper/README.md](task-b-micro-scraper/README.md) for details.
-
----
-
-## Project Structure
-
-```
-.
-├── task-a-mini-full-stack-search/
-└── task-b-micro-scraper/
-```
 
 ---
 
