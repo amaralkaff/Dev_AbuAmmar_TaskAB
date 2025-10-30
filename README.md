@@ -1,95 +1,82 @@
-# Mini Full-Stack Search
+# Full-Stack Developer Technical Assessment
 
-A simple FAQ search tool. Type a query and get the top 3 matches instantly.
+Developer: Abu Ammar
 
-## Quick Start
+---
 
+Two tasks for the technical assessment:
+- **Task A**: Search interface with a backend API
+- **Task B**: Web scraper that extracts page metadata
+
+Built with Next.js 16, React 19, and TypeScript.
+
+---
+
+## How to Run
+
+**Task A:**
 ```bash
-npm install
-npm run dev
+cd task-a-mini-full-stack-search
+npm install && npm run dev
 ```
+Open http://localhost:3000
 
-Open **localhost:3000** to start searching.
-
-## Available Commands
-
+**Task B:**
 ```bash
-npm run dev     # Start development server
-npm run build   # Build for production
-npm run lint    # Check code quality
+cd task-b-micro-scraper
+npm install && npm run dev
 ```
+Open http://localhost:3000
 
-## Tech Stack
+---
 
-Next.js 16, React 19, TypeScript, Tailwind v4, and Zod for validation.
+## What Each Task Does
+
+**Task A - Mini Full-Stack Search**
+
+Search UI that queries local JSON data and shows top 3 matches.
+
+See [task-a-mini-full-stack-search/README.md](task-a-mini-full-stack-search/README.md) for details.
+
+**Task B - Micro Scraper**
+
+API endpoint that scrapes webpage title, meta description, and h1 tag. Has 20-second timeout and proper error handling.
+
+See [task-b-micro-scraper/README.md](task-b-micro-scraper/README.md) for details.
+
+---
 
 ## Project Structure
 
 ```
-app/
-  api/search/route.ts    → Search API
-  page.tsx               → Main page
-components/
-  search/                → Form, results, states
-  retroui/               → UI components
-hooks/
-  useSearch.ts           → Search logic
-data/
-  faqs.json              → Sample FAQs
+.
+├── task-a-mini-full-stack-search/
+└── task-b-micro-scraper/
 ```
 
-## API Endpoint
+---
 
-**POST `/api/search`**
+## Key Features
 
-Request:
-```json
-{ "query": "trust badges" }
+**Task A**
+- Returns top 3 results by relevance score
+- Query "trust badges" correctly returns item #1 first
+- Empty queries return 400 error
+- Bonus: Generates summary and includes source IDs
+
+**Task B**
+- Extracts title, meta description, h1 from any webpage
+- Invalid URLs return 400 error
+- Timeouts return 504 error
+- Bonus: Custom user-agent and retry logic
+
+---
+
+## Common Commands
+
+```bash
+npm install    # Install dependencies
+npm run dev    # Start dev server
+npm run build  # Build for production
+npm run lint   # Check code quality
 ```
-
-Response:
-```json
-{
-  "results": [
-    { "id": "1", "title": "...", "body": "..." }
-  ],
-  "summary": "Found 3 results for 'trust badges'",
-  "sources": ["1", "2", "3"]
-}
-```
-
-Empty query returns 400 error. No matches returns empty array with message.
-
-## Search Algorithm
-
-Like scanning a book: titles are weighted higher than body text.
-
-**Scoring:**
-- Each word match in title: 10 points
-- Each word match in body: 3 points
-- Exact phrase in title: +20 bonus
-- Exact phrase in body: +5 bonus
-
-**Example:** Search "trust badges" → FAQ #1 gets 51 points
-- Title has both words (20 pts) + exact phrase bonus (20 pts)
-- Body has both words (6 pts) + exact phrase bonus (5 pts)
-- Other FAQs: 0 points
-
-Returns top 3 results sorted by score.
-
-## Features
-
-- Case-insensitive search
-- Real-time results
-- Top 3 ranked matches
-- Loading, error, and empty states
-- Responsive design (mobile-friendly)
-
-## Sample Data
-
-5 FAQs focused on conversion optimization:
-1. Trust badges near CTA
-2. Above-the-fold form placement
-3. Qualifying questions
-4. Test ID visibility
-5. Down-funnel icon usage
