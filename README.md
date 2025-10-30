@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mini Full-Stack Search
 
-## Getting Started
+A quick search tool for finding FAQs. Type what you need, get the top 3 matches instantly.
 
-First, run the development server:
+## Get it running
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open **localhost:3000** and start searching!
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev     # Start it up
+npm run build   # Build for prod
+npm test        # Run tests
+npm run lint    # Check code
+```
 
-## Learn More
+## Stack
 
-To learn more about Next.js, take a look at the following resources:
+Next.js 16 • TypeScript • React 19 • Tailwind v4 • Vitest
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Folder structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/api/search/route.ts  → Search API
+app/page.tsx             → Main page
+components/              → UI stuff
+hooks/                   → Custom hooks
+data/faqs.json           → The 5 FAQs
+__tests__/               → Tests
+```
 
-## Deploy on Vercel
+## API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**POST to `/api/search`**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Send:
+```json
+{ "query": "trust badges" }
+```
+
+Get back:
+```json
+{
+  "results": [{ "id": "1", "title": "...", "body": "..." }],
+  "summary": "...",
+  "sources": ["1"]
+}
+```
+
+Empty query? → `400 error`
+
+No matches? → Empty array + friendly message
+
+## How search works
+
+Each FAQ gets scored based on matches:
+
+- Word in title: **10 pts**
+- Word in body: **3 pts**
+- Exact phrase in title: **+20 pts**
+- Exact phrase in body: **+5 pts**
+
+**Example:** Search "trust badges" → finds "Trust badges near CTA" first
+- "trust" in title (10) + "badges" in title (10) + exact phrase (20) + "badges" in body (3) = **43 pts**
+
+Top 3 results win!
+
+## Features
+
+- Instant search (doesn't care about capitals)
+- Top 3 ranked results
+- Auto-generated summary
+- Loading/error/empty states
+- Mobile friendly + dark mode
+
+## Why I built it this way
+
+**Titles score higher** → People scan titles first
+
+**Case-insensitive** → Easier to search, no caps needed
+
+**Local JSON file** → Simple, no database setup
+
+**Client + server validation** → Fast feedback + safe API
+
+## The data
+
+5 FAQs in `data/faqs.json` about conversion stuff:
+1. Trust badges near CTA
+2. Above-the-fold form
+3. Qualifying question
+4. Test ID visibility
+5. Down-funnel icon
+
+## Tests
+
+```bash
+npm test              # 12 tests
+npm run test:ui       # Visual runner
+npm run test:coverage # Coverage
+```
