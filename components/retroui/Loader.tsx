@@ -1,30 +1,6 @@
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
 
-const loaderVariants = cva("flex gap-1", {
-  variants: {
-    variant: {
-      default: "[&>div]:bg-primary [&>div]:border-black",
-      secondary: "[&>div]:bg-secondary [&>div]:border-black",
-      outline: "[&>div]:bg-transparent [&>div]:border-black",
-    },
-    size: {
-      sm: "[&>div]:w-2 [&>div]:h-2",
-      md: "[&>div]:w-3 [&>div]:h-3",
-      lg: "[&>div]:w-4 [&>div]:h-4",
-    },
-  },
-  defaultVariants: {
-    variant: "default",
-    size: "md",
-  },
-});
-
-interface LoaderProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "color">,
-    VariantProps<typeof loaderVariants> {
-  asChild?: boolean;
+interface LoaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "color"> {
   count?: number;
   duration?: number;
   delayStep?: number;
@@ -33,9 +9,7 @@ interface LoaderProps
 const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
   (
     {
-      className,
-      variant,
-      size,
+      className = "",
       count = 3,
       duration = 0.5,
       delayStep = 100,
@@ -45,7 +19,7 @@ const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
   ) => {
     return (
       <div
-        className={cn(loaderVariants({ variant, size }), className)}
+        className={`flex gap-1 ${className}`}
         ref={ref}
         role="status"
         aria-label="Loading..."
@@ -54,7 +28,7 @@ const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
         {Array.from({ length: count }).map((_, i) => (
           <div
             key={i}
-            className="border-2 animate-bounce"
+            className="w-4 h-4 bg-primary border-2 border-black animate-bounce"
             style={{
               animationDuration: `${duration}s`,
               animationIterationCount: "infinite",

@@ -8,7 +8,7 @@ export function LoadingState({ message = 'Searching...' }: LoadingStateProps) {
   return (
     <div className="text-center py-12">
       <div className="flex justify-center mb-4">
-        <Loader variant="default" size="lg" count={4} duration={0.6} delayStep={120} />
+        <Loader count={4} duration={0.6} delayStep={120} />
       </div>
       <p className="mt-4 text-muted-foreground font-medium">
         {message}

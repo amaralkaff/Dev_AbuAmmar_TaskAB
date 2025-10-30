@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Space_Grotesk } from "next/font/google";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { WebVitals } from "@/components/WebVitals";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -31,10 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${archivoBlack.variable} ${space.variable}`}>
-        <ErrorBoundary>
-          {children}
-          <WebVitals />
-        </ErrorBoundary>
+        {children}
       </body>
     </html>
   );

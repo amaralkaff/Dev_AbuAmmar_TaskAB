@@ -1,45 +1,47 @@
-import { useForm } from 'react-hook-form';
+import { useState, FormEvent } from 'react';
 import { Button } from '@/components/retroui/Button';
 import { Input } from '@/components/retroui/Input';
-import type { SearchFormData } from '@/types';
-import { searchFormValidation } from '@/types';
 
 interface SearchFormProps {
   onSearch: (query: string) => void;
 }
 
 export function SearchForm({ onSearch }: SearchFormProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SearchFormData>({
-    mode: 'onSubmit',
-    defaultValues: { query: '' },
-  });
+  const [query, setQuery] = useState('');
+  const [error, setError] = useState('');
 
-  const onSubmit = (data: SearchFormData) => {
-    onSearch(data.query);
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
+      setError('Please enter a search query');
+      return;
+    }
+
+    setError('');
+    onSearch(trimmedQuery);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mb-8">
+    <form onSubmit={handleSubmit} className="mb-8">
       <div className="flex flex-col sm:flex-row sm:items-start gap-3">
         <div className="flex-1">
           <Input
             type="text"
-            {...register('query', searchFormValidation.query)}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             placeholder="What are you looking for?"
             className="py-3"
-            aria-invalid={errors.query ? true : undefined}
+            aria-invalid={error ? true : undefined}
           />
-          {errors.query && (
+          {error && (
             <p className="text-sm text-destructive mt-1.5">
-              {errors.query.message}
+              {error}
             </p>
           )}
         </div>
-        <Button type="submit" size="md" className="py-3">
+        <Button type="submit" className="py-3">
           Search
         </Button>
       </div>

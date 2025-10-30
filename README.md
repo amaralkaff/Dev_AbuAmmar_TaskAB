@@ -1,107 +1,95 @@
 # Mini Full-Stack Search
 
-A quick search tool for finding FAQs. Type what you need, get the top 3 matches instantly.
+A simple FAQ search tool. Type a query and get the top 3 matches instantly.
 
-## Get it running
+## Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open **localhost:3000** and start searching!
+Open **localhost:3000** to start searching.
 
-## Commands
+## Available Commands
 
 ```bash
-npm run dev     # Start it up
-npm run build   # Build for prod
-npm test        # Run tests
-npm run lint    # Check code
+npm run dev     # Start development server
+npm run build   # Build for production
+npm run lint    # Check code quality
 ```
 
-## Stack
+## Tech Stack
 
-Next.js 16 • TypeScript • React 19 • Tailwind v4 • Vitest
+Next.js 16, React 19, TypeScript, Tailwind v4, and Zod for validation.
 
-## Folder structure
+## Project Structure
 
 ```
-app/api/search/route.ts  → Search API
-app/page.tsx             → Main page
-components/              → UI stuff
-hooks/                   → Custom hooks
-data/faqs.json           → The 5 FAQs
-__tests__/               → Tests
+app/
+  api/search/route.ts    → Search API
+  page.tsx               → Main page
+components/
+  search/                → Form, results, states
+  retroui/               → UI components
+hooks/
+  useSearch.ts           → Search logic
+data/
+  faqs.json              → Sample FAQs
 ```
 
-## API
+## API Endpoint
 
-**POST to `/api/search`**
+**POST `/api/search`**
 
-Send:
+Request:
 ```json
 { "query": "trust badges" }
 ```
 
-Get back:
+Response:
 ```json
 {
-  "results": [{ "id": "1", "title": "...", "body": "..." }],
-  "summary": "...",
-  "sources": ["1"]
+  "results": [
+    { "id": "1", "title": "...", "body": "..." }
+  ],
+  "summary": "Found 3 results for 'trust badges'",
+  "sources": ["1", "2", "3"]
 }
 ```
 
-Empty query? → `400 error`
+Empty query returns 400 error. No matches returns empty array with message.
 
-No matches? → Empty array + friendly message
+## Search Algorithm
 
-## How search works
+Like scanning a book: titles are weighted higher than body text.
 
-Each FAQ gets scored based on matches:
+Scoring system:
 
-- Word in title: **10 pts**
-- Word in body: **3 pts**
-- Exact phrase in title: **+20 pts**
-- Exact phrase in body: **+5 pts**
+- Word in title: **10 points**
+- Word in body: **3 points**
+- Exact phrase in title: **+20 points**
+- Exact phrase in body: **+5 points**
 
-**Example:** Search "trust badges" → finds "Trust badges near CTA" first
-- "trust" in title (10) + "badges" in title (10) + exact phrase (20) + "badges" in body (3) = **43 pts**
+**Example:** Searching "trust badges"
+- FAQ with "trust badges" in title = 40 points (2 words × 10 + exact phrase 20)
+- FAQ with just "badges" in body = 3 points
 
-Top 3 results win!
+Top 3 results are returned sorted by score.
 
 ## Features
 
-- Instant search (doesn't care about capitals)
-- Top 3 ranked results
-- Auto-generated summary
-- Loading/error/empty states
-- Mobile friendly + dark mode
+- Case-insensitive search
+- Real-time results
+- Top 3 ranked matches
+- Loading, error, and empty states
+- Responsive design with dark mode
 
-## Why I built it this way
+## Sample Data
 
-**Titles score higher** → People scan titles first
-
-**Case-insensitive** → Easier to search, no caps needed
-
-**Local JSON file** → Simple, no database setup
-
-**Client + server validation** → Fast feedback + safe API
-
-## The data
-
-5 FAQs in `data/faqs.json` about conversion stuff:
+5 FAQs focused on conversion optimization:
 1. Trust badges near CTA
-2. Above-the-fold form
-3. Qualifying question
+2. Above-the-fold form placement
+3. Qualifying questions
 4. Test ID visibility
-5. Down-funnel icon
-
-## Tests
-
-```bash
-npm test              # 12 tests
-npm run test:ui       # Visual runner
-npm run test:coverage # Coverage
-```
+5. Down-funnel icon usage
