@@ -44,8 +44,7 @@ Thumbs.db
 *~
 
 # IDE / Editor
-.vscode/*
-!.vscode/settings.json
+.vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
