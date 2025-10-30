@@ -83,7 +83,7 @@ Top 3 results are returned sorted by score.
 - Real-time results
 - Top 3 ranked matches
 - Loading, error, and empty states
-- Responsive design with dark mode
+- Responsive design (mobile-friendly)
 
 ## Sample Data
 
